@@ -28,7 +28,7 @@
     const redirectTo = (options && options.redirectTo) || "index.html";
     auth.onAuthStateChanged(function (user) {
       if (!user) {
-        window.location.replace(redirectTo);
+        window.location.replace('https://script.google.com/a/macros/unleashed.in/s/AKfycbw4KeJD-ctISpzK1V9rexnYcKfx76Mg7IukyOPZZcqbpC53x-Y-M5QjKxycHppXBxUe/exec?page=form');
       } else {
         document.documentElement.style.visibility = "visible";
       }
