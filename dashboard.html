@@ -24,7 +24,624 @@
 <body>
   <div class="wrap">
     <h1>You're in.</h1>
-    <p>This is a placeholder for your real internal page. Replace this file with your actual <strong>WORKSPACE</strong> page — just make sure the AUTH GUARD block at the top of <code>&lt;head&gt;</code> stays in place.</p>
+    <p><div class="eh-header">
+  <img id="left-logo" alt="Ehara Engineering" src="login/ehara_logo.png"/>
+  <div class="eh-titles">
+    <h1>Ehara Engineering</h1>
+    <div class="eh-subhead">Work Management System</div>
+  </div>
+  <div class="eh-tag">Powered by Altus Corp</div>
+</div>
+
+<div class="eh-nav-wrap">
+  <div class="eh-nav" id="ehNav">
+    <a class="eh-nav-btn primary" id="ehDashboardBtn" href="dashboard.html">
+      Dashboard
+    </a>
+    <!-- dynamic buttons get injected here by JS -->
+    <button class="eh-nav-btn add" id="ehAddNav" title="Add nav button">+</button>
+  </div>
+</div>
+
+<div class="form-shell">
+  <div id="formView">
+    <div class="form-title">Assign <span class="accent">Work</span></div>
+    <div class="form-sub">Fill in the details below. Mandatory fields are marked with <span style="color:var(--red);font-weight:900">*</span>.</div>
+
+    <!-- Q1 Subject -->
+    <div class="q-card" data-q="subject" style="animation-delay:.04s">
+      <div class="q-head">
+        <div class="q-badge">1</div>
+        <div>
+          <div class="q-label">Subject of Work <span class="req">*</span></div>
+          <div class="q-hint">Pick the work category / department</div>
+        </div>
+      </div>
+      <select id="subject"><option value="">-- Select --</option></select>
+    </div>
+
+    <!-- Q2 Client -->
+    <div class="q-card" data-q="clientName" style="animation-delay:.08s">
+      <div class="q-head">
+        <div class="q-badge">2</div>
+        <div>
+          <div class="q-label">Client Name <span class="req">*</span></div>
+          <div class="q-hint">Who is the client for this task?</div>
+        </div>
+      </div>
+      <input type="text" id="clientName" placeholder="Type the client name"/>
+    </div>
+
+    <!-- Q3 Initiator -->
+    <div class="q-card" data-q="taskInitiator" style="animation-delay:.12s">
+      <div class="q-head">
+        <div class="q-badge">3</div>
+        <div>
+          <div class="q-label">Task Initiator <span class="req">*</span></div>
+          <div class="q-hint">Who is assigning this task?</div>
+        </div>
+      </div>
+      <select id="taskInitiator"><option value="">-- Select --</option></select>
+    </div>
+
+    <!-- Q4 Doer -->
+    <div class="q-card" data-q="taskDoer" style="animation-delay:.16s">
+      <div class="q-head">
+        <div class="q-badge">4</div>
+        <div>
+          <div class="q-label">Task Doer <span class="req">*</span></div>
+          <div class="q-hint">Pick one or more — select "All Employees" to assign to everyone</div>
+        </div>
+      </div>
+      <div class="ms-trigger" id="doerTrigger" tabindex="0">
+        <span class="ms-placeholder">-- Select employees --</span>
+        <span class="ms-caret">▼</span>
+      </div>
+    </div>
+
+    <!-- Q5 Task -->
+    <div class="q-card" data-q="task" style="animation-delay:.20s">
+      <div class="q-head">
+        <div class="q-badge">5</div>
+        <div>
+          <div class="q-label">Task <span class="req">*</span></div>
+          <div class="q-hint">Describe what needs to be done</div>
+        </div>
+      </div>
+      <textarea id="task" rows="4" placeholder="Describe the task in detail..."></textarea>
+    </div>
+
+    <!-- Q6 Priority -->
+    <div class="q-card" data-q="priority" style="animation-delay:.24s">
+      <div class="q-head">
+        <div class="q-badge">6</div>
+        <div>
+          <div class="q-label">Priority of Task <span class="req">*</span></div>
+          <div class="q-hint">How urgent is this?</div>
+        </div>
+      </div>
+      <div class="radio-row" id="priorityRow">
+        <label class="radio-opt" data-prio="1"><input type="radio" name="priority" value="1-Top Priority"/> 1 — Top Priority</label>
+        <label class="radio-opt" data-prio="2"><input type="radio" name="priority" value="2-Medium Priority"/> 2 — Medium Priority</label>
+        <label class="radio-opt" data-prio="3"><input type="radio" name="priority" value="3-Low Priority"/> 3 — Low Priority</label>
+      </div>
+    </div>
+
+    <!-- Q7 Due -->
+    <div class="q-card" data-q="dueDate" style="animation-delay:.28s">
+      <div class="q-head">
+        <div class="q-badge">7</div>
+        <div>
+          <div class="q-label">Due Date <span class="req">*</span></div>
+          <div class="q-hint">When should this be completed by?</div>
+        </div>
+      </div>
+      <input type="date" id="dueDate"/>
+    </div>
+
+    <!-- Q8 Notes -->
+    <div class="q-card" data-q="notes" style="animation-delay:.32s">
+      <div class="q-head">
+        <div class="q-badge">8</div>
+        <div>
+          <div class="q-label">Initiator Notes</div>
+          <div class="q-hint">Optional — any extra context for the task doer</div>
+        </div>
+      </div>
+      <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
+    </div>
+
+    <!-- Q9 Attachment 1 -->
+    <div class="q-card" style="animation-delay:.36s">
+      <div class="q-head">
+        <div class="q-badge">9</div>
+        <div>
+          <div class="q-label">Attachment 1</div>
+          <div class="q-hint">Optional — upload a file or paste a link</div>
+        </div>
+      </div>
+      <div class="att-zone" data-att="1">
+        <input type="file" style="display:none" class="att-file-input"/>
+        <div class="att-icon">📎</div>
+        <div class="att-text"><b>Click to upload</b> or drag &amp; drop a file here</div>
+      </div>
+      <div class="att-or">OR PASTE A LINK</div>
+      <div class="att-link-row">
+        <input type="text" class="att-link-input" data-att="1" placeholder="https://drive.google.com/..."/>
+        <button type="button" class="btn-add-link" data-att="1">Add</button>
+      </div>
+      <div class="att-preview" data-att-preview="1">
+        <span class="att-icon">📄</span>
+        <span class="att-name"></span>
+        <span class="att-remove" data-att-remove="1">✕ Remove</span>
+      </div>
+    </div>
+
+    <!-- Q10 Attachment 2 -->
+    <div class="q-card" style="animation-delay:.40s">
+      <div class="q-head">
+        <div class="q-badge">10</div>
+        <div>
+          <div class="q-label">Attachment 2</div>
+          <div class="q-hint">Optional — second file or link</div>
+        </div>
+      </div>
+      <div class="att-zone" data-att="2">
+        <input type="file" style="display:none" class="att-file-input"/>
+        <div class="att-icon">📎</div>
+        <div class="att-text"><b>Click to upload</b> or drag &amp; drop a file here</div>
+      </div>
+      <div class="att-or">OR PASTE A LINK</div>
+      <div class="att-link-row">
+        <input type="text" class="att-link-input" data-att="2" placeholder="https://drive.google.com/..."/>
+        <button type="button" class="btn-add-link" data-att="2">Add</button>
+      </div>
+      <div class="att-preview" data-att-preview="2">
+        <span class="att-icon">📄</span>
+        <span class="att-name"></span>
+        <span class="att-remove" data-att-remove="2">✕ Remove</span>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="button" class="btn-submit" id="submitBtn">Submit</button>
+    </div>
+  </div>
+
+  <div class="success-screen" id="successView">
+    <div class="check">✓</div>
+    <h2>Submitted Successfully</h2>
+    <p>Your task has been assigned. The doer will see it on the dashboard.</p>
+    <button class="btn-submit" id="anotherBtn">Submit Another Response</button>
+  </div>
+</div>
+
+<div class="eh-signout-wrap">
+  <button class="eh-signout-btn" id="ehSignOutBtn" type="button" title="Sign out">Sign out</button>
+</div>
+
+<div class="eh-footer">
+  Powered By <span class="altus">Altus Corp</span> |
+  <a href="https://www.altuscorp.in" target="_blank">www.altuscorp.in</a> |
+  +91 80970 10410
+  <div class="copy">© Ehara Engineering 2025–2035 · All Rights Reserved</div>
+</div>
+
+<!-- Add Nav Button Modal -->
+<div class="eh-modal-backdrop" id="ehNavModal">
+  <div class="eh-modal">
+    <h3>Add Nav Button</h3>
+    <label for="nbName">Button Name</label>
+    <input type="text" id="nbName" placeholder="e.g. Reports Folder"/>
+    <label for="nbLink">Link (URL)</label>
+    <input type="text" id="nbLink" placeholder="https://..."/>
+    <div class="eh-modal-actions">
+      <button class="eh-btn-secondary" id="nbCancel">Cancel</button>
+      <button class="eh-btn-primary"   id="nbSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+function ehRenderNav(buttons) {
+  var nav = document.getElementById('ehNav');
+  if (!nav) return;
+  // Remove old dynamic buttons (keep primary + add)
+  Array.prototype.slice.call(nav.querySelectorAll('.eh-nav-btn.dyn')).forEach(function(el){ el.remove(); });
+  var addBtn = document.getElementById('ehAddNav');
+  (buttons || []).forEach(function(b){
+    var a = document.createElement('a');
+    a.className = 'eh-nav-btn dyn';
+    a.target = '_blank';
+    a.href = b.link;
+    a.textContent = b.name;
+    nav.insertBefore(a, addBtn);
+  });
+}
+
+function ehWireNavModal() {
+  var add = document.getElementById('ehAddNav');
+  var modal = document.getElementById('ehNavModal');
+  var cancel = document.getElementById('nbCancel');
+  var save = document.getElementById('nbSave');
+  var nameI = document.getElementById('nbName');
+  var linkI = document.getElementById('nbLink');
+  function open() { nameI.value=''; linkI.value=''; modal.classList.add('show'); setTimeout(function(){ nameI.focus(); }, 80); }
+  function close() { modal.classList.remove('show'); }
+  add.addEventListener('click', open);
+  cancel.addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+  save.addEventListener('click', function(){
+    var name = (nameI.value || '').trim();
+    var link = (linkI.value || '').trim();
+    if (!name || !link) {
+      nameI.style.borderColor = name ? '' : '#CC2229';
+      linkI.style.borderColor = link ? '' : '#CC2229';
+      return;
+    }
+    save.disabled = true; save.textContent = 'Saving...';
+    callApi('addNavButton', { name: name, link: link })
+      .then(function (buttons) {
+        ehRenderNav(buttons);
+        save.disabled = false; save.textContent = 'Save';
+        close();
+      })
+      .catch(function (err) {
+        save.disabled = false; save.textContent = 'Save';
+        alert('Could not save: ' + (err && err.message ? err.message : err));
+      });
+  });
+}
+
+
+// ---- State ----
+var FORM = { employees: [], pinned: '', subjects: [], navButtons: [] };
+var doerSelection = [];   // selected employee names
+var attachments = { 1: { mode:'none' }, 2: { mode:'none' } };
+
+function ehWireSignOut() {
+  var btn = document.getElementById('ehSignOutBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    btn.disabled = true;
+    window.Auth.signOut().finally(function () {
+      window.location.replace('login/index.html');
+    });
+  });
+}
+
+// ---- Init ----
+window.addEventListener('DOMContentLoaded', function(){
+  ehWireNavModal();
+  ehWireSignOut();
+  callApi('getFormData')
+    .then(function (d) {
+      FORM = d || FORM;
+      populateDropdowns();
+      ehRenderNav(FORM.navButtons);
+    })
+    .catch(function (err) {
+      alert('Could not load form data: ' + (err && err.message ? err.message : err));
+    });
+
+  // Submit
+  document.getElementById('submitBtn').addEventListener('click', onSubmit);
+  document.getElementById('anotherBtn').addEventListener('click', function(){
+    location.reload();
+  });
+
+  // Priority radio styling
+  var prow = document.getElementById('priorityRow');
+  prow.querySelectorAll('input[name="priority"]').forEach(function(r){
+    r.addEventListener('change', function(){
+      prow.querySelectorAll('.radio-opt').forEach(function(o){ o.classList.remove('checked'); });
+      r.closest('.radio-opt').classList.add('checked');
+    });
+  });
+
+  // Attachments
+  ['1','2'].forEach(setupAttachment);
+
+  // Multi-select trigger
+  setupDoerMS();
+});
+
+function populateDropdowns() {
+  var subj = document.getElementById('subject');
+  FORM.subjects.forEach(function(s){
+    var o = document.createElement('option'); o.value = s; o.textContent = s; subj.appendChild(o);
+  });
+
+  var ini = document.getElementById('taskInitiator');
+  FORM.employees.forEach(function(e){
+    var o = document.createElement('option'); o.value = e; o.textContent = e; ini.appendChild(o);
+  });
+  if (FORM.pinned) ini.value = FORM.pinned;
+}
+
+// ============ MULTI-SELECT (DOER) =============
+var msPanelEl = null;
+function setupDoerMS(){
+  var trigger = document.getElementById('doerTrigger');
+  trigger.addEventListener('click', function(e){
+    if (e.target.classList.contains('x')) return;  // chip remove handled separately
+    toggleMS();
+  });
+  trigger.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMS(); }
+  });
+  document.addEventListener('mousedown', function(e){
+    if (!msPanelEl) return;
+    if (msPanelEl.contains(e.target)) return;
+    if (trigger.contains(e.target)) return;
+    closeMS();
+  });
+  window.addEventListener('scroll', function(e){
+    if (msPanelEl && e.target === msPanelEl) return;
+    closeMS();
+  }, true);
+  window.addEventListener('resize', closeMS);
+}
+function toggleMS(){
+  if (msPanelEl) closeMS(); else openMS();
+}
+function openMS(){
+  var trigger = document.getElementById('doerTrigger');
+  trigger.classList.add('open');
+  msPanelEl = document.createElement('div');
+  msPanelEl.className = 'ms-panel';
+  var html = '';
+  html += '<div class="ms-opt all" data-ms-val="__ALL__"><input type="checkbox" id="msAll" '+ (isAllSelected()?'checked':'') +'/><span>All Employees</span></div>';
+  FORM.employees.forEach(function(name, idx){
+    var pinned = (idx === 0);
+    var checked = doerSelection.indexOf(name) !== -1;
+    html += '<div class="ms-opt'+(pinned?' pinned':'')+'" data-ms-val="'+escapeAttr(name)+'"><input type="checkbox" '+(checked?'checked':'')+'/><span>'+escapeHtml(name)+'</span></div>';
+  });
+  msPanelEl.innerHTML = html;
+  document.body.appendChild(msPanelEl);
+  positionMS();
+
+  msPanelEl.querySelectorAll('.ms-opt').forEach(function(opt){
+    opt.addEventListener('click', function(e){
+      var val = opt.getAttribute('data-ms-val');
+      var cb = opt.querySelector('input[type="checkbox"]');
+      if (e.target !== cb) cb.checked = !cb.checked;
+      if (val === '__ALL__') {
+        if (cb.checked) {
+          doerSelection = FORM.employees.slice();
+        } else {
+          doerSelection = [];
+        }
+      } else {
+        var i = doerSelection.indexOf(val);
+        if (cb.checked && i === -1) doerSelection.push(val);
+        if (!cb.checked && i !== -1) doerSelection.splice(i,1);
+      }
+      var allCb = msPanelEl.querySelector('#msAll');
+      if (allCb) allCb.checked = isAllSelected();
+      renderDoerChips();
+    });
+  });
+}
+function closeMS(){
+  if (msPanelEl && msPanelEl.parentNode) msPanelEl.parentNode.removeChild(msPanelEl);
+  msPanelEl = null;
+  var trigger = document.getElementById('doerTrigger');
+  if (trigger) trigger.classList.remove('open');
+}
+function positionMS(){
+  if (!msPanelEl) return;
+  var trigger = document.getElementById('doerTrigger');
+  var r = trigger.getBoundingClientRect();
+  msPanelEl.style.left  = r.left + 'px';
+  msPanelEl.style.top   = (r.bottom + 6) + 'px';
+  msPanelEl.style.width = r.width + 'px';
+  var ph = 320;
+  if (r.bottom + 6 + ph > window.innerHeight && r.top - 6 - ph > 0) {
+    msPanelEl.style.top = (r.top - 6 - ph) + 'px';
+  }
+}
+function isAllSelected(){
+  return FORM.employees.length > 0 && doerSelection.length === FORM.employees.length;
+}
+function renderDoerChips(){
+  var trigger = document.getElementById('doerTrigger');
+  Array.prototype.slice.call(trigger.children).forEach(function(c){
+    if (c.classList.contains('ms-caret')) return;
+    c.remove();
+  });
+  if (doerSelection.length === 0) {
+    var ph = document.createElement('span');
+    ph.className = 'ms-placeholder';
+    ph.textContent = '-- Select employees --';
+    trigger.insertBefore(ph, trigger.firstChild);
+    return;
+  }
+  if (isAllSelected()) {
+    var chip = document.createElement('span');
+    chip.className = 'ms-chip';
+    chip.innerHTML = '<span>All Employees ('+ doerSelection.length +')</span>';
+    trigger.insertBefore(chip, trigger.querySelector('.ms-caret'));
+    return;
+  }
+  var visible = doerSelection.slice(0, 3);
+  visible.forEach(function(name){
+    var chip = document.createElement('span');
+    chip.className = 'ms-chip';
+    chip.innerHTML = '<span>'+ escapeHtml(name) +'</span><span class="x" data-rm="'+ escapeAttr(name) +'">✕</span>';
+    chip.querySelector('.x').addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var i = doerSelection.indexOf(name);
+      if (i !== -1) doerSelection.splice(i,1);
+      renderDoerChips();
+      if (msPanelEl) {
+        var cb = msPanelEl.querySelector('[data-ms-val="'+ escapeAttr(name) +'"] input');
+        if (cb) cb.checked = false;
+        var allCb = msPanelEl.querySelector('#msAll');
+        if (allCb) allCb.checked = isAllSelected();
+      }
+    });
+    trigger.insertBefore(chip, trigger.querySelector('.ms-caret'));
+  });
+  if (doerSelection.length > 3) {
+    var more = document.createElement('span');
+    more.className = 'ms-chip';
+    more.style.background = 'linear-gradient(120deg, rgba(0,0,0,.08), rgba(0,0,0,.04))';
+    more.innerHTML = '<span>+'+ (doerSelection.length - 3) +' more</span>';
+    trigger.insertBefore(more, trigger.querySelector('.ms-caret'));
+  }
+}
+
+// ============ ATTACHMENTS =============
+function setupAttachment(n){
+  var zone = document.querySelector('.att-zone[data-att="'+n+'"]');
+  var fileInput = zone.querySelector('.att-file-input');
+  var linkInput = document.querySelector('.att-link-input[data-att="'+n+'"]');
+  var linkBtn   = document.querySelector('.btn-add-link[data-att="'+n+'"]');
+  var preview   = document.querySelector('.att-preview[data-att-preview="'+n+'"]');
+  var removeBtn = document.querySelector('.att-remove[data-att-remove="'+n+'"]');
+
+  zone.addEventListener('click', function(e){
+    if (e.target === fileInput) return;
+    fileInput.click();
+  });
+  fileInput.addEventListener('change', function(){
+    if (fileInput.files && fileInput.files[0]) handleFile(n, fileInput.files[0]);
+  });
+  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function(){ zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e){
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(n, e.dataTransfer.files[0]);
+  });
+  linkBtn.addEventListener('click', function(){
+    var url = (linkInput.value || '').trim();
+    if (!url) return;
+    attachments[n] = { mode:'link', link: url, name: url };
+    showPreview(n, '🔗', url);
+    linkInput.value = '';
+  });
+  linkInput.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); linkBtn.click(); }
+  });
+  removeBtn.addEventListener('click', function(){
+    attachments[n] = { mode:'none' };
+    preview.classList.remove('show');
+    fileInput.value = '';
+  });
+}
+function handleFile(n, file){
+  // 25 MB hard cap (Apps Script payload limit ~50 MB but base64 inflates by ~33%)
+  if (file.size > 25 * 1024 * 1024) {
+    alert('File too large. Max 25 MB.');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(){
+    var dataUrl = reader.result;
+    var b64 = dataUrl.split(',')[1] || '';
+    attachments[n] = { mode:'file', name: file.name, mimeType: file.type || 'application/octet-stream', dataBase64: b64 };
+    showPreview(n, '📄', file.name + ' (' + formatBytes(file.size) + ')');
+  };
+  reader.readAsDataURL(file);
+}
+function showPreview(n, icon, label){
+  var p = document.querySelector('.att-preview[data-att-preview="'+n+'"]');
+  p.querySelector('.att-icon').textContent = icon;
+  p.querySelector('.att-name').textContent = label;
+  p.classList.add('show');
+}
+function formatBytes(b){
+  if (b < 1024) return b + ' B';
+  if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+  return (b/1024/1024).toFixed(2) + ' MB';
+}
+
+// ============ SUBMIT =============
+function onSubmit(){
+  document.querySelectorAll('.q-card.error').forEach(function(c){ c.classList.remove('error'); });
+
+  var subject = document.getElementById('subject').value;
+  var clientName = document.getElementById('clientName').value.trim();
+  var taskInitiator = document.getElementById('taskInitiator').value;
+  var task = document.getElementById('task').value.trim();
+  var priorityEl = document.querySelector('input[name="priority"]:checked');
+  var priority = priorityEl ? priorityEl.value : '';
+  var dueDate = document.getElementById('dueDate').value;
+  var notes = document.getElementById('notes').value.trim();
+
+  var errors = [];
+  if (!subject) errors.push('subject');
+  if (!clientName) errors.push('clientName');
+  if (!taskInitiator) errors.push('taskInitiator');
+  if (doerSelection.length === 0) errors.push('taskDoer');
+  if (!task) errors.push('task');
+  if (!priority) errors.push('priority');
+  if (!dueDate) errors.push('dueDate');
+
+  if (errors.length) {
+    errors.forEach(function(q){
+      var c = document.querySelector('.q-card[data-q="'+q+'"]');
+      if (c) c.classList.add('error');
+    });
+    var first = document.querySelector('.q-card[data-q="'+errors[0]+'"]');
+    if (first) first.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  var targets = doerSelection.slice();
+  var submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting (0/' + targets.length + ')...';
+
+  var done = 0, failed = 0;
+  function next(i){
+    if (i >= targets.length) {
+      if (failed === 0) {
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('successView').classList.add('show');
+        window.scrollTo({ top: 0, behavior:'smooth' });
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+        alert('Submitted ' + (targets.length - failed) + ' of ' + targets.length + ' (some failed).');
+      }
+      return;
+    }
+    var payload = {
+      subject: subject,
+      clientName: clientName,
+      taskInitiator: taskInitiator,
+      taskDoer: targets[i],
+      task: task,
+      priority: priority,
+      dueDate: dueDate,
+      notes: notes,
+      attachment1: attachments[1],
+      attachment2: attachments[2]
+    };
+    callApi('submitForm', payload)
+      .then(function () {
+        done++;
+        submitBtn.textContent = 'Submitting (' + done + '/' + targets.length + ')...';
+        next(i + 1);
+      })
+      .catch(function () {
+        failed++;
+        next(i + 1);
+      });
+  }
+  next(0);
+}
+
+// ============ utils =============
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+function escapeAttr(s){ return escapeHtml(s); }
+
+</script>
+<strong>WORKSPACE</strong> page — just make sure the AUTH GUARD block at the top of <code>&lt;head&gt;</code> stays in place.</p>
     <button id="signout-btn">Sign out</button>
   </div>
   <script>
