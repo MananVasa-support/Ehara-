@@ -1,0 +1,115 @@
+<!-- ============================================================
+  EHARA FORM PATCH — two changes only
+  1. Replace the CSS block for .eh-signout-wrap + .eh-signout-btn
+  2. Replace the HTML .eh-signout-wrap div
+  Everything else in EharaForm.html stays exactly the same.
+============================================================ -->
+
+<!-- ── CHANGE 1: Replace this CSS (inside <style>) ───────────────────────
+
+FIND (exact block):
+.eh-signout-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 48px auto 24px;
+  padding: 0 18px;
+}
+.eh-signout-btn {
+  padding: 11px 32px;
+  background: #fff;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .18s ease;
+  box-shadow: var(--shadow-soft);
+}
+.eh-signout-btn:hover {
+  background: var(--red);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(197,35,48,0.30);
+}
+.eh-signout-btn:disabled { opacity: 0.6; cursor: wait; }
+
+REPLACE WITH: -->
+<style>
+.eh-signout-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 48px auto 24px;
+  padding: 0 18px;
+  flex-wrap: wrap;
+}
+.eh-dashboard-btn {
+  padding: 11px 32px;
+  background: linear-gradient(120deg, var(--blue-soft), var(--blue-deep));
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(13,2,138,.28);
+  transition: transform .15s, box-shadow .2s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.eh-dashboard-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(13,2,138,.42);
+}
+.eh-signout-btn {
+  padding: 11px 32px;
+  background: #fff;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .18s ease;
+  box-shadow: var(--shadow-soft);
+}
+.eh-signout-btn:hover {
+  background: var(--red);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(197,35,48,0.30);
+}
+.eh-signout-btn:disabled { opacity: 0.6; cursor: wait; }
+</style>
+
+<!-- ── CHANGE 2: Replace this HTML ───────────────────────────────────────
+
+FIND:
+<div class="eh-signout-wrap">
+  <button class="eh-signout-btn" id="ehSignOutBtn" type="button" title="Sign out">Sign out</button>
+</div>
+
+REPLACE WITH: -->
+<div class="eh-signout-wrap">
+  <a class="eh-dashboard-btn"
+     href="https://script.google.com/a/macros/unleashed.in/s/AKfycbw4KeJD-ctISpzK1V9rexnYcKfx76Mg7IukyOPZZcqbpC53x-Y-M5QjKxycHppXBxUe/exec"
+     target="_top">
+    📊 View Dashboard
+  </a>
+  <button class="eh-signout-btn" id="ehSignOutBtn" type="button" title="Sign out">
+    🚪 Sign Out
+  </button>
+</div>
+
+<!-- ══ END PATCH ══════════════════════════════════════════════════════ -->
