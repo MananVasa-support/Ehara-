@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- AUTH GUARD — must be the FIRST thing inside <head> -->
+<!-- AUTH GUARD -->
 <style id="auth-guard-hide">html { visibility: hidden; }</style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -12,26 +12,252 @@
 
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ehara Engineering Pvt. Ltd. WORKSPACE</title>
+<title>Workspace · Ehara Engineering</title>
 <style>
-  body { margin: 0; font-family: Arial, sans-serif; background: #fafafa; color: #111; }
-  .wrap { max-width: 760px; margin: 80px auto; padding: 40px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.05); }
-  h1 { margin: 0 0 14px; font-size: 32px; }
-  p  { color: #555; line-height: 1.6; }
-  button { margin-top: 24px; background: #0a0a0a; color: #fff; border: 0; padding: 14px 22px; border-radius: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:      #1A3CC8;
+    --blue-deep: #0D028A;
+    --blue-soft: #2E5BFF;
+    --red:       #C52330;
+    --ink:       #1a1d24;
+    --paper:     #F0F9FB;
+    --line:      #dde1ea;
+    --shadow:    0 1px 2px rgba(15,20,30,.04), 0 4px 12px rgba(15,20,30,.06);
+    --shadow-lg: 0 4px 8px rgba(15,20,30,.06), 0 16px 32px rgba(15,20,30,.10);
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--paper);
+    background-image: radial-gradient(circle at 1px 1px, rgba(20,30,50,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- HEADER ---- */
+  .eh-header {
+    position: relative;
+    background: linear-gradient(120deg, #0a0e1a 0%, #1a1f2e 45%, #0d028a 100%);
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+    overflow: hidden;
+    border-bottom: 2px solid var(--red);
+  }
+  .eh-header::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: -1px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--red) 20%, #E53935 50%, var(--red) 80%, transparent 100%);
+    box-shadow: 0 0 18px rgba(229,57,53,.55), 0 0 36px rgba(229,57,53,.25);
+  }
+  .eh-header-logo {
+    height: 70px; width: auto;
+    background: #fff; border-radius: 10px; padding: 6px 10px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.40));
+  }
+  .eh-header-title {
+    text-align: center;
+  }
+  .eh-header-title h1 {
+    font-size: 28px; font-weight: 900; letter-spacing: 0.5px;
+    color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.40);
+  }
+  .eh-header-title .sub {
+    margin-top: 5px;
+    font-size: 13px; font-weight: 800; letter-spacing: 1.5px;
+    color: #E53935; text-transform: uppercase;
+  }
+  .eh-tag {
+    background: var(--red); color: #fff;
+    font-size: 10.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 4px 10px; border-radius: 4px;
+  }
+
+  /* ---- MAIN CARD ---- */
+  .ws-wrap {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 0 20px;
+    animation: fadeUp .4s ease both;
+  }
+  .ws-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 44px 40px 36px;
+    box-shadow: var(--shadow-lg);
+    border-top: 4px solid transparent;
+    border-image: linear-gradient(120deg, var(--blue-soft), var(--blue-deep)) 1;
+    text-align: center;
+  }
+  .ws-check {
+    display: inline-grid; place-items: center;
+    width: 76px; height: 76px;
+    background: linear-gradient(135deg, var(--blue-soft), var(--blue-deep));
+    color: #fff; font-size: 36px;
+    border-radius: 50%;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 28px rgba(13,2,138,.28);
+    animation: popIn .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .ws-card h2 {
+    font-size: 32px; font-weight: 900; letter-spacing: -.3px;
+    color: var(--ink); margin-bottom: 10px;
+  }
+  .ws-card p {
+    font-size: 15px; color: #5a5f6d; line-height: 1.6; margin-bottom: 0;
+  }
+
+  /* ---- BOTTOM BUTTONS ---- */
+  .ws-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin: 48px auto 32px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+  }
+  .ws-btn-form {
+    padding: 13px 32px;
+    background: linear-gradient(120deg, var(--blue-soft), var(--blue-deep));
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13.5px; font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(13,2,138,.28);
+    transition: transform .15s, box-shadow .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .ws-btn-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(13,2,138,.42);
+  }
+  .ws-btn-signout {
+    padding: 13px 32px;
+    background: #fff;
+    color: var(--red);
+    border: 1.5px solid var(--red);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13.5px; font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(197,35,48,.10);
+    transition: all .18s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .ws-btn-signout:hover {
+    background: var(--red);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(197,35,48,.28);
+  }
+  .ws-btn-signout:disabled { opacity: 0.6; cursor: wait; }
+
+  /* ---- FOOTER ---- */
+  .eh-footer {
+    padding: 18px 24px;
+    background: #0a0e1a;
+    color: #cfd2d8;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.7;
+    border-top: 1px solid #050811;
+  }
+  .eh-footer a { color: #cfd2d8; text-decoration: underline; }
+  .eh-footer .altus { color: #E53935; font-weight: 900; }
+  .eh-footer .copy { color: #888c95; font-size: 11px; margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    0%   { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  @media (max-width: 600px) {
+    .eh-header { padding: 16px 14px; gap: 12px; }
+    .eh-header-logo { height: 44px; padding: 4px 6px; }
+    .eh-header-title h1 { font-size: 18px; }
+    .ws-card { padding: 32px 22px 28px; }
+    .ws-card h2 { font-size: 24px; }
+    .ws-actions { gap: 10px; }
+    .ws-btn-form, .ws-btn-signout { padding: 12px 24px; font-size: 12.5px; }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>You're in.</h1>
-    <p>This is a placeholder for your real internal page. Replace this file with your actual <strong>WORKSPACE</strong> page — just make sure the AUTH GUARD block at the top of <code>&lt;head&gt;</code> stays in place.</p>
-    <button id="signout-btn">Sign out</button>
+
+<div class="eh-header">
+  <img class="eh-header-logo" src="ehara_logo.png" alt="Ehara Engineering"/>
+  <div class="eh-header-title">
+    <h1>Ehara Engineering</h1>
+    <div class="sub">Work Management System</div>
   </div>
-  <script>
-    document.getElementById('signout-btn').addEventListener('click', async function () {
-      await window.Auth.signOut();
+  <div class="eh-tag">Powered by Altus Corp</div>
+</div>
+
+<div class="ws-wrap">
+  <div class="ws-card">
+    <div class="ws-check">✓</div>
+    <h2>You're in.</h2>
+    <p>You're signed in to the Ehara Engineering workspace.<br/>
+    Use the button below to open the Work Assignment Form,<br/>
+    or view the live Dashboard.</p>
+  </div>
+</div>
+
+<!-- BOTTOM BUTTONS -->
+<div class="ws-actions">
+  <a class="ws-btn-form"
+     href="https://script.google.com/a/macros/unleashed.in/s/AKfycbw4KeJD-ctISpzK1V9rexnYcKfx76Mg7IukyOPZZcqbpC53x-Y-M5QjKxycHppXBxUe/exec?page=form"
+     target="_blank">
+    📋 Open Form
+  </a>
+  <a class="ws-btn-form"
+     href="https://script.google.com/a/macros/unleashed.in/s/AKfycbw4KeJD-ctISpzK1V9rexnYcKfx76Mg7IukyOPZZcqbpC53x-Y-M5QjKxycHppXBxUe/exec"
+     target="_blank"
+     style="background: linear-gradient(120deg,#1e7e34,#145a24);">
+    📊 View Dashboard
+  </a>
+  <button class="ws-btn-signout" id="signOutBtn" type="button">
+    🚪 Sign Out
+  </button>
+</div>
+
+<div class="eh-footer">
+  Powered By <span class="altus">Altus Corp</span> |
+  <a href="https://www.altuscorp.in" target="_blank">www.altuscorp.in</a> |
+  +91 80970 10410
+  <div class="copy">© Ehara Engineering 2025–2035 · All Rights Reserved</div>
+</div>
+
+<script>
+  document.getElementById('signOutBtn').addEventListener('click', function () {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Signing out…';
+    window.Auth.signOut().finally(function () {
       window.location.replace('index.html');
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
